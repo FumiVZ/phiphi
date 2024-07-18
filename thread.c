@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   thread.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:15 by vzuccare         ###   ########lyon.fr   */
+/*   Created: 2024/07/18 18:16:18 by vzuccare          #+#    #+#             */
+/*   Updated: 2024/07/18 18:50:45 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// TODO
-int	check_error(char **av)
+static void	*routine(void *pointer_info)
 {
-	(void)av;
-	return (0);
+	t_info	*info;
+
+	info = (t_info *) pointer_info;
+	return (NULL);
 }
 
-void	ft_exit_err(char *mess, int status)
+void	init_thread(t_info *info)
 {
-	ft_putstr_fd(mess, 2);
-	exit(status);
-}
+	unsigned long long	i;
 
-void	free_exit(char *mess, int status, t_info *info)
-{
-	free_info(info);
-	ft_exit_err(mess, status);
+	i = 0;
+	while (i < info->nb_philo)
+	{
+		if (pthread_create(&info->philo[i].thread, \
+			NULL, &routine, &info) != 0)
+			free_exit(TH_ERR, 3, info);
+		i++;
+	}
 }

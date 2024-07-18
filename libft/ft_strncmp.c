@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: vzuccare <vzuccare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:15 by vzuccare         ###   ########lyon.fr   */
+/*   Created: 2023/11/07 12:26:44 by vzuccare          #+#    #+#             */
+/*   Updated: 2023/11/09 13:12:16 by vzuccare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "libft.h"
 
-// TODO
-int	check_error(char **av)
+int	ft_strncmp( const char *s1, const char *s2, size_t n )
 {
-	(void)av;
+	size_t	i;
+
+	i = 0;
+	while ((s1[i] || s2[i]) && (i < n))
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+		i++;
+	}
 	return (0);
-}
-
-void	ft_exit_err(char *mess, int status)
-{
-	ft_putstr_fd(mess, 2);
-	exit(status);
-}
-
-void	free_exit(char *mess, int status, t_info *info)
-{
-	free_info(info);
-	ft_exit_err(mess, status);
 }

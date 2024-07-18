@@ -1,32 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_isprint.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: vzuccare <vzuccare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:15 by vzuccare         ###   ########lyon.fr   */
+/*   Created: 2023/11/07 09:57:53 by vzuccare          #+#    #+#             */
+/*   Updated: 2023/11/16 10:45:52 by vzuccare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-// TODO
-int	check_error(char **av)
+int	ft_isprint(int c)
 {
-	(void)av;
+	if ((c >= 32) && (c <= 126))
+		return (1);
 	return (0);
-}
-
-void	ft_exit_err(char *mess, int status)
-{
-	ft_putstr_fd(mess, 2);
-	exit(status);
-}
-
-void	free_exit(char *mess, int status, t_info *info)
-{
-	free_info(info);
-	ft_exit_err(mess, status);
 }

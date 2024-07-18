@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:15 by vzuccare         ###   ########lyon.fr   */
+/*   Created: 2023/11/07 12:03:59 by vzuccare          #+#    #+#             */
+/*   Updated: 2024/02/29 12:57:10 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "libft.h"
 
-// TODO
-int	check_error(char **av)
+char	*ft_tolower_str(char *str)
 {
-	(void)av;
-	return (0);
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		str[i] = ft_tolower(str[i]);
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
 }
 
-void	ft_exit_err(char *mess, int status)
+int	ft_tolower(int character)
 {
-	ft_putstr_fd(mess, 2);
-	exit(status);
-}
-
-void	free_exit(char *mess, int status, t_info *info)
-{
-	free_info(info);
-	ft_exit_err(mess, status);
+	if (character >= 'A' && character <= 'Z')
+		return (character = character + 32);
+	else if (character == EOF)
+		return (-1);
+	else
+		return (character);
 }

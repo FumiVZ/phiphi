@@ -1,32 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: vzuccare <vzuccare@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:15 by vzuccare         ###   ########lyon.fr   */
+/*   Created: 2023/11/06 15:05:11 by vzuccare          #+#    #+#             */
+/*   Updated: 2023/11/16 10:45:50 by vzuccare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-
-// TODO
-int	check_error(char **av)
+int	ft_isdigit(int c)
 {
-	(void)av;
+	if ((c >= 48) && (c <= 57))
+		return (1);
 	return (0);
-}
-
-void	ft_exit_err(char *mess, int status)
-{
-	ft_putstr_fd(mess, 2);
-	exit(status);
-}
-
-void	free_exit(char *mess, int status, t_info *info)
-{
-	free_info(info);
-	ft_exit_err(mess, status);
 }
