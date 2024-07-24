@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:55:45 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:59 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/07/24 18:24:15 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@
 _eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 # define MALLOC_ERR "malloc failed\n"
 # define TH_ERR "thread error\n"
+# define TAKE_FORK "has taken a fork"
+# define EATING "is eating"
+# define SLEEPING "is sleeping"
+# define THINKING "is thinking"
+# define DIED "died"
 
 typedef struct s_philo
 {
@@ -67,5 +72,8 @@ void					free_exit(char *mess, int status, t_info *info);
 
 // thread.c
 void					init_thread(t_info *info);
+
+// main.c
+unsigned long long		get_time(void);
 
 #endif

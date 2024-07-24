@@ -6,13 +6,23 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:08:49 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:29:06 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/07/24 18:57:21 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	void_p(void);
+unsigned long long	get_time(void)
+{
+	struct timeval		tv;
+	unsigned long long	time;
+
+	gettimeofday(&tv, NULL);
+	time = (unsigned long long)(tv.tv_sec);
+	time *= 1000;
+	time += (unsigned long long)(tv.tv_usec);
+	return (time);
+}
 
 int	main(int ac, char **av)
 {
