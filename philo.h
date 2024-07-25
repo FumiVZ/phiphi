@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:55:45 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/24 18:24:15 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/07/25 16:04:12 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ _eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 # define THINKING "is thinking"
 # define DIED "died"
 
+// Forward declaration of t_info
+typedef struct s_info	t_info;
+
 typedef struct s_philo
 {
 	int					id;
@@ -48,6 +51,7 @@ typedef struct s_philo
 	pthread_mutex_t		*r_fork;
 	pthread_t			thread;
 	pthread_mutex_t		dead_mutex;
+	t_info				*infos;
 }						t_philo;
 
 typedef struct s_info

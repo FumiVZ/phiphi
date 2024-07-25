@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:08:49 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/24 18:57:21 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/07/25 14:46:54 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,10 @@
 unsigned long long	get_time(void)
 {
 	struct timeval		tv;
-	unsigned long long	time;
 
-	gettimeofday(&tv, NULL);
-	time = (unsigned long long)(tv.tv_sec);
-	time *= 1000;
-	time += (unsigned long long)(tv.tv_usec);
-	return (time);
+	if (gettimeofday(&tv, NULL))
+		return (-1); // todo
+	return ((tv.tv_sec * (unsigned long long) 1000) + (tv.tv_usec / 1000));
 }
 
 int	main(int ac, char **av)

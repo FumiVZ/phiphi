@@ -7,7 +7,8 @@ SRC = main.c \
 	  init.c \
 	  error.c \
 	  free.c \
-	  thread.c
+	  thread.c \
+	  utils.c
 
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))

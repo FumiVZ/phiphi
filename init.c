@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:23:53 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/24 19:03:27 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/07/25 15:17:55 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	init_philo(t_info *info, int ac, char **av)
 		else
 			info->philo[i].nb_eat = -1;
 		info->philo[i].is_dead = false;
+		info->philo[i].infos = info;
 		i++;
 	}
 	init_forks(info->philo, info->nb_philo);
@@ -58,6 +59,5 @@ void	init_info(t_info *info, int ac, char **av)
 	if (!info->philo)
 		ft_exit_err(MALLOC_ERR, 2);
 	init_philo(info, ac, av);
-	info->time = get_time();
 	init_thread(info);
 }
