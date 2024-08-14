@@ -8,6 +8,7 @@ SRC = main.c \
 	  error.c \
 	  free.c \
 	  thread.c \
+	  message.c \
 	  utils.c
 
 OBJ_DIR = obj
@@ -28,7 +29,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(LIBFT): libft
-	make -C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)	
 
 clean:
 	rm -rf $(OBJ_DIR)

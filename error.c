@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/18 18:48:15 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/07/30 15:30:21 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 // TODO
 int	check_error(char **av)
 {
-	(void)av;
+	if (ft_atoi(av[1]) < 2 || ft_atoi(av[2]) < 1 || ft_atoi(av[3]) < 1 || \
+		(ft_atoi(av[4]) < 1) || (av[5] && ft_atoi(av[5]) < 1))
+		return (1);
 	return (0);
 }
 
