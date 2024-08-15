@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:47:29 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/14 18:38:15 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/15 17:57:38 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	take_fork(t_philo *philo)
 	}
 }
 
-void	check_death(t_philo *philo)
+int	check_death(t_philo *philo)
 {
 	if (get_time() - philo->last_eat > philo->time_to_die)
 	{
@@ -53,16 +53,21 @@ void	check_death(t_philo *philo)
 		philo->is_dead = true;
 		pthread_mutex_unlock(&(philo->dead_mutex));
 	}
+	return (philo->is_dead);
 }
 
-void	ft_usleep(t_philo *philo, unsigned long long time)
+int	ft_usleep(t_philo *philo, unsigned long long time)
 {
 	unsigned long long	start;
 
 	start = get_time();
-	while (get_time() - start < time && !philo->is_dead)
+	while (philo->infos->is_finished \
+		&& get_time() - start < time)
 	{
+		if (check_death(philo))
+			return (1);
 		usleep(100);
-		check_death(philo);
 	}
+	return (0);
 }
+

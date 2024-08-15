@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:23:53 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/14 18:10:09 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/15 15:04:25 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,13 @@ static void	init_philo(t_info *info, int ac, char **av)
 			info->nb_eat = ft_atoi(av[5]);
 		else
 			info->nb_eat = -1;
+		info->philo[i].nb_eat = 0;
 		info->philo[i].is_dead = false;
 		info->philo[i].infos = info;
 		info->philo[i].last_eat = get_time();
 		pthread_mutex_init(&info->philo[i].dead_mutex, NULL);
 		info->is_dead_mut = &info->philo[i].dead_mutex;
+		info->philo[i].ready = false;
 		i++;
 	}
 	init_forks(info->philo, info->nb_philo);
@@ -62,6 +64,8 @@ void	init_info(t_info *info, int ac, char **av)
 {
 	info->nb_philo = ft_atoi(av[1]);
 	info->philo = malloc(sizeof(t_philo) * info->nb_philo);
+	if (!info->philo)
+		ft_exit_err(MALLOC_ERR, 2);
 	if (!info->philo)
 		ft_exit_err(MALLOC_ERR, 2);
 	init_philo(info, ac, av);

@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:08:49 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/07/30 14:07:32 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/15 17:47:35 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ int	main(int ac, char **av)
 	info = malloc(sizeof(t_info));
 	if ((ac != 5 && ac != 6) || check_error(av))
 		ft_exit_err(ERROR_ARGS, 1);
+	info->monitor = 0;
+	info->is_dead = false;
+	info->has_eat = false;
+	info->is_ready = false;
+	info->is_finished = false;
 	init_info(info, ac, av);
 	init_thread(info);
 	free_info(info);

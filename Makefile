@@ -9,7 +9,8 @@ SRC = main.c \
 	  free.c \
 	  thread.c \
 	  message.c \
-	  utils.c
+	  utils.c \
+	  monitoring.c
 
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(SRC:.c=.o))
