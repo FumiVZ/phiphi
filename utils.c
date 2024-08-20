@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:47:29 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/15 17:57:38 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/20 16:42:39 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,30 +44,16 @@ void	take_fork(t_philo *philo)
 	}
 }
 
-int	check_death(t_philo *philo)
-{
-	if (get_time() - philo->last_eat > philo->time_to_die)
-	{
-		pthread_mutex_lock(&(philo->dead_mutex));
-		print_message(philo, DIED);
-		philo->is_dead = true;
-		pthread_mutex_unlock(&(philo->dead_mutex));
-	}
-	return (philo->is_dead);
-}
-
 int	ft_usleep(t_philo *philo, unsigned long long time)
 {
 	unsigned long long	start;
 
+	(void)philo;
+	if (philo->infos->is_finished)
+		return (1);
 	start = get_time();
-	while (philo->infos->is_finished \
-		&& get_time() - start < time)
-	{
-		if (check_death(philo))
-			return (1);
+	while (get_time() - start < time)
 		usleep(100);
-	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:55:45 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/15 17:43:06 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/20 16:45:57 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ typedef struct s_philo
 	bool				ready;
 	pthread_mutex_t		l_fork;
 	pthread_mutex_t		*r_fork;
-	pthread_t			thread;
 	pthread_mutex_t		dead_mutex;
+	pthread_t			thread;
 	t_info				*infos;
 }						t_philo;
 
@@ -60,6 +60,7 @@ typedef struct s_info
 {
 	t_philo				*philo;
 	pthread_mutex_t		*is_dead_mut;
+	pthread_mutex_t		print_mut;
 	unsigned long long	time;
 	unsigned long long	nb_philo;
 	long long			nb_eat;
@@ -86,11 +87,9 @@ void					init_info(t_info *info, int ac, char **av);
 unsigned long long		get_time(void);
 
 // message.c
-void					print_message(t_philo *philo, char *message);
+int						print_message(t_philo *philo, char *message);
 
 // monitoring.c
-bool					has_eat(t_info *info);
-bool					check_ready(t_info *info);
 void					*monitoring(void *p_info);
 
 // thread.c
@@ -99,7 +98,6 @@ void					init_thread(t_info *info);
 // utils.c
 void					unlock_mutex(t_philo *philo);
 void					take_fork(t_philo *philo);
-int						check_death(t_philo *philo);
 int						ft_usleep(t_philo *philo, unsigned long long time);
 
 #endif

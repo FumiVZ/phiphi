@@ -6,29 +6,22 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 13:43:14 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/15 17:50:49 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/20 18:35:21 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	has_eat(t_info *info)
+static bool	has_eat(long long nb_eat, t_philo *philo)
 {
-	size_t	i;
-
-	i = 0;
-	if (info->nb_eat == -1)
+	if (nb_eat == -1)
 		return (false);
-	while (i < info->nb_philo)
-	{
-		if (info->philo[i].nb_eat < info->nb_eat)
-			return (false);
-		i++;
-	}
-	return (true);
+	if (philo->nb_eat >= nb_eat)
+		return (true);
+	return (false);
 }
 
-bool	check_ready(t_info *info)
+static bool	check_ready(t_info *info)
 {
 	size_t	i;
 
@@ -41,31 +34,44 @@ bool	check_ready(t_info *info)
 	return (true);
 }
 
+static int	check_death(t_philo *philo)
+{
+	if (get_time() - philo->last_eat > philo->time_to_die)
+	{
+		pthread_mutex_lock(&(philo->dead_mutex));
+		print_message(philo, DIED);
+		pthread_mutex_unlock(&(philo->dead_mutex));
+		return (1);
+	}
+	return (0);
+}
+
+
 void	*monitoring(void *p_info)
 {
 	t_info	*info;
 	size_t	i;
 
 	info = (t_info *)p_info;
-	if (info->is_ready == false)
+	while (info->is_ready == false)
 		check_ready(info);
-	while (info->is_dead == false && info->has_eat == false)
+	while (info->is_finished == false)
 	{
-		i = 0;
+		i = -1;
 		while (++i < info->nb_philo)
 		{
-			pthread_mutex_lock(&info->philo[i].dead_mutex);
-			if (info->philo[i].is_dead)
+			if (check_death(&info->philo[i]) == true)
 			{
 				info->is_finished = true;
-				pthread_mutex_unlock(&info->philo[i].dead_mutex);
-				break ;
+				return (NULL);
 			}
-			info->is_finished = has_eat(info);
-			pthread_mutex_unlock(&info->philo[i].dead_mutex);
-			i++;
+			if (info->nb_eat != -1 && \
+				has_eat(info->nb_eat, &info->philo[i]) == true)
+			{
+				info->is_finished = true;
+				return (NULL);
+			}
 		}
 	}
-
 	return (NULL);
 }

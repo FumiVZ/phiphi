@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 18:16:18 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/15 17:56:52 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/20 16:04:16 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 static void	eating_philo(t_philo *philo)
 {
-	pthread_mutex_lock(&(philo->dead_mutex));
 	philo->last_eat = get_time();
-	pthread_mutex_unlock(&(philo->dead_mutex));
 }
 
 static void	*routine(void *p_philo)
@@ -29,22 +27,23 @@ static void	*routine(void *p_philo)
 	philo->ready = true;
 	while (info->is_ready == false)
 		usleep(10);
-	while (!philo->infos->is_finished && philo->nb_eat < philo->infos->nb_eat)
+	while (!philo->infos->is_finished)
 	{
 		take_fork(philo);
+		if (print_message(philo, EATING) == 1)
+			return (unlock_mutex(philo), NULL);
 		eating_philo(philo);
-		print_message(philo, EATING);
-		if (ft_usleep(philo, philo->time_to_eat))
-		{
-			unlock_mutex(philo);
-			break ;
-		}
+		if (ft_usleep(philo, philo->time_to_eat) == 1)
+			return (unlock_mutex(philo), NULL);
 		philo->nb_eat++;
 		unlock_mutex(philo);
-		print_message(philo, SLEEPING);
-		if (ft_usleep(philo, philo->time_to_sleep))
-			break ;
-		print_message(philo, THINKING);
+		if (print_message(philo, SLEEPING) == 1)
+			return (NULL);
+		if (ft_usleep(philo, philo->time_to_sleep) == 1)
+			return (NULL);
+		if (print_message(philo, THINKING) == 1)
+			return (NULL);
+		ft_usleep(philo, 10);
 	}
 	return (NULL);
 }
@@ -54,19 +53,16 @@ void	init_thread(t_info *info)
 	unsigned long long	i;
 
 	info->time = get_time();
-	while (!info->is_finished)
+	i = 0;
+	while (i < info->nb_philo)
 	{
-		i = 0;
-		while (i < info->nb_philo)
-		{
-			if (pthread_create(&info->philo[i].thread, NULL, &routine,
-					&info->philo[i]) != 0)
-				free_exit(TH_ERR, 3, info);
-			i++;
-		}
-		if (pthread_create(&info->monitor, NULL, &monitoring, info) != 0)
+		if (pthread_create(&info->philo[i].thread, NULL, &routine,
+				&info->philo[i]) != 0)
 			free_exit(TH_ERR, 3, info);
+		i++;
 	}
+	if (pthread_create(&info->monitor, NULL, &monitoring, info) != 0)
+		free_exit(TH_ERR, 3, info);
 	i = 0;
 	while (i < info->nb_philo)
 	{

@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:23:53 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/15 15:04:25 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/20 15:17:56 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void	init_philo(t_info *info, int ac, char **av)
 		info->philo[i].last_eat = get_time();
 		pthread_mutex_init(&info->philo[i].dead_mutex, NULL);
 		info->is_dead_mut = &info->philo[i].dead_mutex;
+		pthread_mutex_init(&info->print_mut, NULL);
 		info->philo[i].ready = false;
 		i++;
 	}
