@@ -6,48 +6,11 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:35:31 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/20 19:06:11 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/22 16:43:20 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-bool	is_number(char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-static int	atoi_err(const char *str, long int *va)
-{
-	int			signe;
-	size_t		i;
-
-	i = 0;
-	signe = 1;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-		if (str[i++] == '-')
-			signe = -1;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		if (*va != ((*va * 10) + str[i] - '0') / 10)
-			return (-1);
-		*va = *va * 10 + str[i] - '0';
-		i++;
-	}
-	*va *= signe;
-	return (1);
-}
 
 static int	is_valid(char *str, long int except)
 {

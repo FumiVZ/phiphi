@@ -6,31 +6,48 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:23:53 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/20 15:17:56 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/22 18:27:32 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	init_forks(t_philo *philo, unsigned long long nb_philo)
+void	print_forks(t_philo *philo, unsigned long long nb_philo)
 {
 	unsigned long long	i;
 
 	i = 0;
 	while (i < nb_philo)
 	{
-		if (pthread_mutex_init(&philo[i].l_fork, NULL))
+		printf("philo[%llu].l_fork = %p\n", i, &philo[i].l_fork);
+		printf("philo[%llu].r_fork = %p\n", i, philo[i].r_fork);
+		i++;
+	}
+}
+
+static void	init_forks(t_philo *philo, unsigned long long nb_philo)
+{
+	unsigned long long	i;
+
+	i = 0;
+	if (nb_philo == 1)
+	{
+		if (pthread_mutex_init(&philo[0].l_fork.mutex, NULL))
 			ft_exit_err(MUTEX_ERR, 2);
+		philo[0].l_fork.is_taken = false;
+		return ;
+	}
+	while (i < nb_philo)
+	{
+		if (pthread_mutex_init(&philo[i].l_fork.mutex, NULL))
+			ft_exit_err(MUTEX_ERR, 2);
+		philo[i].l_fork.is_taken = false;
 		if (i == 0)
 			philo[i].r_fork = &philo[nb_philo - 1].l_fork;
 		else
 			philo[i].r_fork = &philo[i - 1].l_fork;
 		i++;
 	}
-	if (i == 1)
-		return ;
-	else
-		philo[i - 1].r_fork = &philo[0].l_fork;
 }
 
 static void	init_philo(t_info *info, int ac, char **av)
@@ -52,12 +69,12 @@ static void	init_philo(t_info *info, int ac, char **av)
 		info->philo[i].is_dead = false;
 		info->philo[i].infos = info;
 		info->philo[i].last_eat = get_time();
-		pthread_mutex_init(&info->philo[i].dead_mutex, NULL);
-		info->is_dead_mut = &info->philo[i].dead_mutex;
-		pthread_mutex_init(&info->print_mut, NULL);
 		info->philo[i].ready = false;
 		i++;
 	}
+	pthread_mutex_init(&info->print_mut, NULL);
+	pthread_mutex_init(&info->dead_mutex, NULL);
+	pthread_mutex_init(&info->eat_mut, NULL);
 	init_forks(info->philo, info->nb_philo);
 }
 

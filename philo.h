@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 13:55:45 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/20 16:45:57 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/22 18:25:34 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,12 @@ _eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
 // Forward declaration of t_info
 typedef struct s_info	t_info;
 
+typedef struct s_fork
+{
+	pthread_mutex_t		mutex;
+	bool				is_taken;
+}						t_fork;
+
 typedef struct s_philo
 {
 	int					id;
@@ -45,13 +51,13 @@ typedef struct s_philo
 	unsigned long long	time_to_die;
 	unsigned long long	time_to_eat;
 	unsigned long long	time_to_sleep;
+	unsigned long long	time_to_think;
 	unsigned long long	*time;
 	long long			nb_eat;
 	bool				is_dead;
 	bool				ready;
-	pthread_mutex_t		l_fork;
-	pthread_mutex_t		*r_fork;
-	pthread_mutex_t		dead_mutex;
+	t_fork				l_fork;
+	t_fork				*r_fork;
 	pthread_t			thread;
 	t_info				*infos;
 }						t_philo;
@@ -59,14 +65,15 @@ typedef struct s_philo
 typedef struct s_info
 {
 	t_philo				*philo;
-	pthread_mutex_t		*is_dead_mut;
+	pthread_mutex_t		dead_mutex;
 	pthread_mutex_t		print_mut;
+	pthread_mutex_t		eat_mut;
 	unsigned long long	time;
 	unsigned long long	nb_philo;
 	long long			nb_eat;
 	bool				is_dead;
 	bool				has_eat;
-	bool				is_ready;
+	_Atomic bool		is_ready;
 	bool				is_finished;
 	pthread_t			monitor;
 }						t_info;
@@ -96,8 +103,13 @@ void					*monitoring(void *p_info);
 void					init_thread(t_info *info);
 
 // utils.c
+bool					is_number(char *str);
+int						atoi_err(const char *str, long int *va);
 void					unlock_mutex(t_philo *philo);
 void					take_fork(t_philo *philo);
 int						ft_usleep(t_philo *philo, unsigned long long time);
+
+
+void					print_forks(t_philo *philo, unsigned long long nb_philo);
 
 #endif
