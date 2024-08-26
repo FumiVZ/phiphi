@@ -6,7 +6,7 @@
 /*   By: vzuccare <vzuccare@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 13:47:29 by vzuccare          #+#    #+#             */
-/*   Updated: 2024/08/22 18:21:37 by vzuccare         ###   ########lyon.fr   */
+/*   Updated: 2024/08/26 17:41:13 by vzuccare         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ bool	is_number(char *str)
 
 int	atoi_err(const char *str, long int *va)
 {
-	int			signe;
-	size_t		i;
+	int		signe;
+	size_t	i;
 
 	i = 0;
 	signe = 1;
@@ -49,55 +49,19 @@ int	atoi_err(const char *str, long int *va)
 	return (1);
 }
 
-void	unlock_mutex(t_philo *philo)
+bool	take_fork(pthread_mutex_t mutex, bool *var)
 {
-	if (philo->infos->nb_philo == 1)
-	{
-		philo->l_fork.is_taken = false;
-		pthread_mutex_unlock(&(philo->l_fork.mutex));
-	}
-	else if (philo->id % 2 == 0)
-	{
-		philo->l_fork.is_taken = false;
-		philo->r_fork->is_taken = false;
-		pthread_mutex_unlock(&(philo->l_fork.mutex));
-		pthread_mutex_unlock(&(philo->r_fork->mutex));
-	}
-	else
-	{
-		philo->l_fork.is_taken = false;
-		philo->r_fork->is_taken = false;
-		pthread_mutex_unlock(&(philo->r_fork->mutex));
-		pthread_mutex_unlock(&(philo->l_fork.mutex));
-	}
-}
+	bool	ret;
 
-void	take_fork(t_philo *philo)
-{
-	if (philo->infos->nb_philo == 1)
+	ret = false;
+	pthread_mutex_lock(&mutex);
+	if (*var == false)
 	{
-		pthread_mutex_lock(&(philo->l_fork.mutex));
-		print_message(philo, TAKE_FORK);
-		philo->l_fork.is_taken = true;
+		*var = true;
+		ret = true;
 	}
-	else if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(&(philo->l_fork.mutex));
-		philo->l_fork.is_taken = true;
-		print_message(philo, TAKE_FORK);
-		pthread_mutex_lock(&(philo->r_fork->mutex));
-		philo->r_fork->is_taken = true;
-		print_message(philo, TAKE_FORK);
-	}
-	else
-	{
-		pthread_mutex_lock(&(philo->l_fork.mutex));
-		philo->l_fork.is_taken = true;
-		print_message(philo, TAKE_FORK);
-		pthread_mutex_lock(&(philo->r_fork->mutex));
-		philo->r_fork->is_taken = true;
-		print_message(philo, TAKE_FORK);
-	}
+	pthread_mutex_unlock(&mutex);
+	return (ret);
 }
 
 int	ft_usleep(t_philo *philo, unsigned long long time)
@@ -105,8 +69,13 @@ int	ft_usleep(t_philo *philo, unsigned long long time)
 	unsigned long long	start;
 
 	(void)philo;
+	pthread_mutex_lock(&(philo->infos->dead_mtx));
 	if (philo && philo->infos->is_finished)
+	{
+		pthread_mutex_unlock(&(philo->infos->dead_mtx));
 		return (1);
+	}
+	pthread_mutex_unlock(&(philo->infos->dead_mtx));
 	start = get_time();
 	while (get_time() - start < time)
 		usleep(100);
